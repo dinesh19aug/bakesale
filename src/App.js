@@ -11,14 +11,31 @@ import {
   Text,
   View
 } from 'react-native';
+import ajax from './ajax' 
+import DealsList from './DealsList'
 
 
+export default class App extends Component {
+  state = {
+    deals:[],
+  }
+  async componentDidMount(){
+    const deals = await ajax.fetchInitialdeals();
+    this.setState(() => {return {deals}}
 
-export default class App extends Component<Props> {
+    )
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={[ styles.header]}> BakeSale </Text>
+        {
+          this.state.deals.length > 0 ?
+          <DealsList deals={this.state.deals}/>:
+          <Text style={[ styles.header]}> BakeSale </Text> 
+          
+        }
+        
+        
       </View>
     );
   }
